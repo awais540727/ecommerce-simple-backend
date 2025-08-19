@@ -34,7 +34,7 @@ export const sendMail1 = (req, res) => {
         return res.status(500).json({ error, message: error.message });
       }
       if (info.messageId) {
-        console.log(info.messageId);
+        // console.log(info.messageId);
         return res.status(200).json({
           message: "Email Sent Succcefully",
           messageId: info.messageId,
