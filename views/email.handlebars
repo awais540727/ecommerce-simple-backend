@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en" class="h-full scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Node App • Lightning Fast API</title>
+  <meta name="description" content="A beautiful starter template for your Node.js application." />
+  <meta property="og:title" content="Node App • Lightning Fast API" />
+  <meta property="og:description" content="Modern, responsive landing page for your Node.js backend." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
+          colors: {
+            brand: { 50:'#eef9ff',100:'#d8f1ff',200:'#b6e5ff',300:'#85d3ff',400:'#4fb8ff',500:'#1a9aff',600:'#0b79d5',700:'#0a61aa',800:'#0a4d86',900:'#0c3f6e' }
+          }
+        }
+      },
+      darkMode: 'class'
+    }
+  </script>
+  <style>
+    /* subtle animated gradient background */
+    .bg-grid {
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(255,255,255,.15) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+  </style>
+</head>
+<body class="h-full bg-slate-950 text-slate-100">
+    <h1>{{name}}</h1>
+    <h1>{{phone}}</h1>
+  <!-- Header -->
+  <header class="sticky top-0 z-40 backdrop-blur bg-slate-950/60 border-b border-white/10">
+    <div class="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2">
+        <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-brand-500 text-white font-bold">N</span>
+        <span class="font-semibold tracking-tight">Node App</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm text-slate-200">
+        <a href="#features" class="hover:text-white">Features</a>
+        <a href="#pricing" class="hover:text-white">Pricing</a>
+        <a href="#faq" class="hover:text-white">FAQ</a>
+        <a href="/api/health" class="inline-flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 hover:bg-white/20">API Health</a>
+      </nav>
+      <button id="mobileMenuBtn" class="md:hidden inline-flex items-center rounded-lg border border-white/10 px-3 py-2">Menu</button>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden border-t border-white/10">
+      <nav class="px-4 py-3 space-y-2">
+        <a href="#features" class="block py-2">Features</a>
+        <a href="#pricing" class="block py-2">Pricing</a>
+        <a href="#faq" class="block py-2">FAQ</a>
+        <a href="/api/health" class="block py-2">API Health</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-brand-600/20 via-transparent to-transparent"></div>
+    <div class="bg-grid">
+      <div class="mx-auto max-w-7xl px-4 py-24">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">
+              Build <span class="text-brand-400">faster</span> with a beautiful Node.js starter
+            </h1>
+            <p class="mt-5 text-slate-300 text-lg max-w-xl">
+              Clean UI, sensible defaults, and production-ready components to showcase your backend API.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="/api/docs" class="rounded-2xl bg-brand-500 px-5 py-3 font-semibold hover:bg-brand-400 transition">View API Docs</a>
+              <a href="#features" class="rounded-2xl border border-white/15 px-5 py-3 hover:bg-white/10">Explore Features</a>
+            </div>
+            <div class="mt-6 text-sm text-slate-400">
+              Try a demo endpoint: <code class="bg-white/5 px-2 py-1 rounded">GET /api/health</code>
+            </div>
+          </div>
+          <div class="relative">
+            <div class="absolute -inset-6 rounded-3xl bg-brand-500/20 blur-3xl"></div>
+            <div class="relative rounded-3xl border border-white/10 bg-slate-900 p-6 shadow-2xl">
+              <div class="flex items-center justify-between pb-4 border-b border-white/10 text-xs text-slate-400">
+                <span>curl demo</span><span>preview</span>
+              </div>
+<pre class="mt-4 overflow-x-auto text-sm leading-7"><code class="language-bash">$ curl -s https://your-domain.com/api/health | jq
+{
+  "status": "ok",
+  "uptime": 12345,
+  "version": "1.0.0"
+}</code></pre>
+              <div class="mt-6 grid sm:grid-cols-2 gap-4">
+                <a href="/api/health" class="text-center rounded-xl bg-white/10 px-4 py-3 hover:bg-white/20">Check Health</a>
+                <a href="/api/v1/auth/login" class="text-center rounded-xl bg-white/10 px-4 py-3 hover:bg-white/20">Auth Endpoint</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logos / Social proof -->
+  <section class="py-12">
+    <div class="mx-auto max-w-7xl px-4">
+      <p class="text-center text-sm uppercase tracking-widest text-slate-400">Trusted by teams using</p>
+      <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6 opacity-80">
+        <div class="h-10 rounded-lg bg-white/5"></div>
+        <div class="h-10 rounded-lg bg-white/5"></div>
+        <div class="h-10 rounded-lg bg-white/5"></div>
+        <div class="h-10 rounded-lg bg-white/5"></div>
+        <div class="h-10 rounded-lg bg-white/5"></div>
+        <div class="h-10 rounded-lg bg-white/5"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="py-24 border-t border-white/10">
+    <div class="mx-auto max-w-7xl px-4">
+      <div class="max-w-2xl">
+        <h2 class="text-3xl font-bold">Everything you need</h2>
+        <p class="mt-3 text-slate-300">Beautiful components and sensible defaults to showcase your API quickly.</p>
+      </div>
+      <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="rounded-2xl border border-white/10 bg-slate-900 p-6">
+          <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/20">⚡</div>
+          <h3 class="font-semibold">Fast & Lightweight</h3>
+          <p class="mt-2 text-slate-400">No build step required—Tailwind via CDN, loads instantly.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-slate-900 p-6">
+          <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/20">🔐</div>
+          <h3 class="font-semibold">Auth-ready</h3>
+          <p class="mt-2 text-slate-400">Link your login/register routes and show real API states.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-slate-900 p-6">
+          <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/20">🧩</div>
+          <h3 class="font-semibold">Composable</h3>
+          <p class="mt-2 text-slate-400">Copy & paste sections or convert to EJS, Pug, or React.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-slate-900 p-6">
+          <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/20">📊</div>
+          <h3 class="font-semibold">API Metrics</h3>
+          <p class="mt-2 text-slate-400">Show uptime, version, and environment at a glance.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-slate-900 p-6">
+          <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/20">🌙</div>
+          <h3 class="font-semibold">Dark-mode First</h3>
+          <p class="mt-2 text-slate-400">Elegant, accessible colors and balanced contrast.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-slate-900 p-6">
+          <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/20">🚀</div>
+          <h3 class="font-semibold">Deploy Anywhere</h3>
+          <p class="mt-2 text-slate-400">Vercel, Render, Railway, or your own server.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="py-24 border-t border-white/10">
+    <div class="mx-auto max-w-7xl px-4">
+      <h2 class="text-3xl font-bold text-center">Simple pricing</h2>
+      <p class="mt-3 text-slate-300 text-center">Start free, scale when you need to.</p>
+      <div class="mt-10 grid md:grid-cols-3 gap-6">
+        <div class="rounded-2xl border border-white/10 bg-slate-900 p-6">
+          <h3 class="text-xl font-semibold">Hobby</h3>
+          <p class="mt-1 text-slate-400">For experiments</p>
+          <p class="mt-6 text-4xl font-extrabold">$0</p>
+          <ul class="mt-6 space-y-2 text-slate-300">
+            <li>• 10k requests / month</li>
+            <li>• Community support</li>
+          </ul>
+          <a href="#" class="mt-8 inline-block rounded-xl bg-white/10 px-4 py-2 hover:bg-white/20">Get started</a>
+        </div>
+        <div class="rounded-2xl border border-brand-500/30 bg-slate-900 p-6 ring-2 ring-brand-500/40">
+          <h3 class="text-xl font-semibold">Pro</h3>
+          <p class="mt-1 text-slate-400">For growing apps</p>
+          <p class="mt-6 text-4xl font-extrabold">$19</p>
+          <ul class="mt-6 space-y-2 text-slate-300">
+            <li>• 1M requests / month</li>
+            <li>• Priority support</li>
+            <li>• Rate limiting</li>
+          </ul>
+          <a href="#" class="mt-8 inline-block rounded-xl bg-brand-500 px-4 py-2 font-semibold hover:bg-brand-400">Upgrade</a>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-slate-900 p-6">
+          <h3 class="text-xl font-semibold">Enterprise</h3>
+          <p class="mt-1 text-slate-400">Custom needs</p>
+          <p class="mt-6 text-4xl font-extrabold">Let's talk</p>
+          <ul class="mt-6 space-y-2 text-slate-300">
+            <li>• SSO & audit logs</li>
+            <li>• Dedicated cluster</li>
+            <li>• SLA & support</li>
+          </ul>
+          <a href="#" class="mt-8 inline-block rounded-xl bg-white/10 px-4 py-2 hover:bg-white/20">Contact sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-24 border-t border-white/10">
+    <div class="mx-auto max-w-5xl px-4">
+      <h2 class="text-3xl font-bold text-center">Frequently asked questions</h2>
+      <div class="mt-10 grid md:grid-cols-2 gap-6">
+        <div class="rounded-2xl border border-white/10 bg-slate-900 p-6">
+          <h3 class="font-semibold">How do I connect to my API?</h3>
+          <p class="mt-2 text-slate-400">Update the buttons/links to point at your Express routes (e.g., <code>/api/v1/*</code>).</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-slate-900 p-6">
+          <h3 class="font-semibold">Does this work with EJS?</h3>
+          <p class="mt-2 text-slate-400">Yes—rename to <code>index.ejs</code> and inject variables like <code><%= version %></code>.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-slate-900 p-6">
+          <h3 class="font-semibold">Is Tailwind required?</h3>
+          <p class="mt-2 text-slate-400">No—it's via CDN here for speed. You can replace with your own CSS.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-slate-900 p-6">
+          <h3 class="font-semibold">How do I deploy?</h3>
+          <p class="mt-2 text-slate-400">Serve this file with <code>express.static('public')</code> or render via a view engine. Works on Vercel, Render, Railway, etc.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-24 border-t border-white/10">
+    <div class="mx-auto max-w-6xl px-4 text-center">
+      <h2 class="text-3xl font-bold">Ready to build?</h2>
+      <p class="mt-3 text-slate-300">Hook up your endpoints, deploy, and go.</p>
+      <a href="/api/health" class="mt-6 inline-flex items-center justify-center rounded-2xl bg-brand-500 px-6 py-3 font-semibold hover:bg-brand-400">Ping API</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10">
+    <div class="mx-auto max-w-7xl px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-400">
+      <p>© <span id="year"></span> Node App. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="#" class="hover:text-white">Privacy</a>
+        <a href="#" class="hover:text-white">Terms</a>
+        <a href="mailto:support@example.com" class="hover:text-white">Support</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // mobile menu
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      const m = document.getElementById('mobileMenu');
+      m.classList.toggle('hidden');
+    });
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

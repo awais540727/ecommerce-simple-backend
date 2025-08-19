@@ -1,4 +1,6 @@
 import nodemailer from "nodemailer";
+import hbs from "nodemailer-express-handlebars";
+import path from "path";
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -6,13 +8,24 @@ const transporter = nodemailer.createTransport({
     pass: "sjshbdshbshdbhjds",
   },
 });
-
+const options = {
+  viewEngine: {
+    partialsDir: path.resolve("./views/"),
+    defaultLayout: false,
+  },
+  viewPath: path.resolve("./views/"),
+};
+transporter.use("compile", hbs(options));
 const sendEmail = (req, res) => {
   mailOptions = {
     from: "fiver378@gmail.com",
     to: "fiver378@gmail.com",
     subject: "Test Email",
-    text: "Hello Test",
+    html: "email",
+    context: {
+      name: "Aw",
+      nuumber: "03393982727",
+    },
   };
   try {
     transporter.sendMail(mailOptions, (error, info) => {
