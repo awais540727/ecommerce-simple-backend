@@ -5,6 +5,7 @@ import productRoutes from "./routes/productRoutes.js";
 import categoriesRoutes from "./routes/categoriesRoutes.js";
 import morgan from "morgan";
 import cors from "cors";
+
 const app = express();
 
 dotenv.config();
