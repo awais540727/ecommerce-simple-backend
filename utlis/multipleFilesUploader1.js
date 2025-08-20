@@ -9,51 +9,58 @@ import Photo from "../models/productPhoto.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
 cloudinary.config({
   cloud_name: "dhuewvpgu",
   api_key: "977975679946186",
   api_secret: "Sh9FH-u-ANAIlZYcHAqW4ZSUk0g",
 });
 
-export const singlePhotoUpload = (req, res) => {
-  upload.single("photo")(req, res, async (error) => {
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+export const multipleFilesUpload = (req, res) => {
+  upload.array("photos01", 8)(req, res, async (error) => {
     if (error) {
       return res
         .status(500)
         .json({ message: "File upload failed", error: error.message });
     }
-    if (!req.file) {
-      return res.status(404).json({ message: "No file uploaded" });
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "No files uploaded" });
     }
     try {
-      const tempFilePath = path.join(
-        __dirname,
-        "../upload",
-        req.file.originalname
-      );
+      let uploadedPhotos = [];
+      // console.log(uploadedPhotos);
+      for (let i = 0; i < req.files.length; i++) {
+        const tempFilePath = path.join(
+          __dirname,
+          "../upload",
+          req.files[i].originalname
+        );
+        fs.writeFileSync(tempFilePath, req.files[i].buffer);
 
-      fs.writeFileSync(tempFilePath, req.file.buffer);
-
-      const result = await cloudinary.uploader.upload(tempFilePath, {
-        resource_type: "auto",
+        const result = await cloudinary.uploader.upload(tempFilePath, {
+          resource_type: "auto",
+        });
+        // console.log(result.secure_url);
+        fs.unlinkSync(tempFilePath); // Clean up temp file
+        uploadedPhotos.push({
+          photoName: req.files[i].originalname,
+          url: result.secure_url,
+        });
+        // console.log(uploadedPhotos);
+      }
+      const newMultiplePhotos = new Photo({
+        photos: uploadedPhotos,
       });
-
-      const newPhoto = new Photo({
-        photoName: req.file.originalname,
-        url: result.secure_url,
-      });
-      console.log(result);
-      console.log(result.secure_url);
-      await newPhoto.save();
+      await newMultiplePhotos.save();
       return res
         .status(201)
-        .json({ message: "File uploaded successfully", newPhoto });
+        .json({ message: "Files uploaded successfully", newMultiplePhotos });
     } catch (error) {
       return res
         .status(500)
-        .json({ message: "Error uploading file", error: error.message });
+        .json({ message: "Error uploading files", error: error.message });
     }
   });
 };
