@@ -19,11 +19,11 @@ const userSchema = new mongoose.Schema(
     },
     contact: {
       type: Number,
-      required: [true, "Number is required"],
+      // required: [true, "Number is required"],
     },
     address: {
       type: String,
-      required: [true, "Address is manadatory"],
+      // required: [true, "Address is manadatory"],
     },
     products: [
       {
