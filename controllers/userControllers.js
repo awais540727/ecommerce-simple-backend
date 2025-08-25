@@ -1,9 +1,9 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 export const getAllUsersController = async (req, res) => {
   try {
     const users = await User.find();
-
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Error fetching users" });
@@ -53,13 +53,25 @@ export const signInUserController = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid Password" });
     }
+    let jwtOptions = {
+      expiresIn: "1h",
+      jwtid: "123456",
+      issuer: "json",
+    };
+
     let tempUser = {};
-    tempUser.id = user._id;
     tempUser.name = user.name;
     tempUser.email = user.email;
-    return res
-      .status(200)
-      .json({ message: "User signed in successfully", data: tempUser });
+    let userToken = jwt.sign(
+      { id: user._id },
+      process.env.jwtSecret,
+      jwtOptions
+    );
+    return res.status(200).json({
+      message: "User signed in successfully",
+      user: tempUser,
+      token: userToken,
+    });
   } catch (error) {
     return res
       .status(400)
@@ -67,11 +79,8 @@ export const signInUserController = async (req, res) => {
   }
 };
 
-export const getSingleUserController = async (req, res) => {};
-
 export const deleteUserController = async (req, res) => {
   const id = req.params.id;
-  // console.log(id);
   try {
     const user = await User.findOneAndDelete({ _id: id });
     if (!user) {
@@ -119,5 +128,41 @@ export const updateUserController = async (req, res) => {
     return res
       .status(400)
       .json({ message: "Error while updating the user", error: error.message });
+  }
+};
+
+export const changePassword = async (req, res) => {
+  const { email, password, newPassword } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json("User Not Found");
+    }
+    const isMatch = await bcrypt.compare(password, user?.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid Password" });
+    }
+    let token = req.headers.authorization;
+    if (!token) {
+      return res.status(400).json("Unauthorized user e.g Token is Missing");
+    }
+    token = token.split(" ")[1];
+    jwt.verify(token, process.env.jwtSecret, async (error, response) => {
+      if (error) {
+        return res
+          .status(400)
+          .json({ message: "Invalid Token", error: error.message });
+      }
+      const salt = await bcrypt.genSalt(10);
+      const hashPassword = await bcrypt.hash(newPassword, salt);
+      user.password = hashPassword;
+      await user.save();
+      return res.status(200).json({ message: "Password Changed" });
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: "Something went wrong while changing password",
+      error: error.message,
+    });
   }
 };

@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import multer from "multer";
 import { fileURLToPath } from "url";
-import Photo from "../models/productPhoto.js";
+import SinglePhoto from "../../models/singlePhoto.js";
 
 // Fix __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -11,49 +11,52 @@ const __dirname = path.dirname(__filename);
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
+
 cloudinary.config({
   cloud_name: "dhuewvpgu",
   api_key: "977975679946186",
   api_secret: "Sh9FH-u-ANAIlZYcHAqW4ZSUk0g",
 });
 
-export const singlePhotoUpload = (req, res) => {
+export const singlePhotoUpload1 = (req, res) => {
   upload.single("photo")(req, res, async (error) => {
     if (error) {
-      return res
-        .status(500)
-        .json({ message: "File upload failed", error: error.message });
+      return res.status(400).json({ message: "error", error: error.message });
     }
     if (!req.file) {
-      return res.status(404).json({ message: "No file uploaded" });
+      return res.status(400).json({ message: "Please upload file" });
     }
+
     try {
       const tempFilePath = path.join(
         __dirname,
         "../upload",
         req.file.originalname
       );
-
       fs.writeFileSync(tempFilePath, req.file.buffer);
 
       const result = await cloudinary.uploader.upload(tempFilePath, {
         resource_type: "auto",
       });
+      if (!result) {
+        return res.status(400).json({
+          message: "There is some error while uploading on Cloudinary",
+        });
+      }
 
-      const newPhoto = new Photo({
+      const newFile = new SinglePhoto({
         photoName: req.file.originalname,
         url: result.secure_url,
       });
-      console.log(result);
-      console.log(result.secure_url);
-      await newPhoto.save();
+      await newFile.save();
+      fs.unlinkSync(tempFilePath);
       return res
         .status(201)
-        .json({ message: "File uploaded successfully", newPhoto });
+        .json({ message: "Uploaded Successfully", url: result.secure_url });
     } catch (error) {
       return res
-        .status(500)
-        .json({ message: "Error uploading file", error: error.message });
+        .status(400)
+        .json({ message: "catch error", error: error.message });
     }
   });
 };

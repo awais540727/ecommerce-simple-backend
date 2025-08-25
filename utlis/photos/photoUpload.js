@@ -1,6 +1,6 @@
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
-import Photo from "../models/productPhoto.js";
+import Photo from "../../models/productPhoto.js";
 import path from "path";
 import fs from "fs";
 import express from "express";

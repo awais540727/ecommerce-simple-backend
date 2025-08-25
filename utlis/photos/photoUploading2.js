@@ -1,19 +1,16 @@
-import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
-import Photo from "../models/productPhoto.js";
-import path from "path";
 import fs from "fs";
+import path from "path";
+import multer from "multer";
 import { fileURLToPath } from "url";
+import Photo from "../../models/productPhoto.js";
 
 // Fix __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET,
-// });
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 cloudinary.config({
   cloud_name: "dhuewvpgu",
@@ -21,54 +18,41 @@ cloudinary.config({
   api_secret: "Sh9FH-u-ANAIlZYcHAqW4ZSUk0g",
 });
 
-// ✅ Multer memory storage
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
-
-export const photoUploading = (req, res) => {
-  upload.single("photo")(req, res, async (err) => {
-    if (err) {
+export const photoUploading2 = (req, res) => {
+  upload.single("photo")(req, res, async (error) => {
+    if (error) {
       return res
         .status(500)
-        .json({ message: "File upload failed", error: err.message });
+        .json({ message: "File upload failed", error: error.message });
     }
     if (!req.file) {
       return res.status(404).json({ message: "No file uploaded" });
     }
-
     try {
-      // Optional: save buffer to a temp file
       const tempFilePath = path.join(
         __dirname,
         "../upload",
         req.file.originalname
       );
       fs.writeFileSync(tempFilePath, req.file.buffer);
-
-      // Upload to Cloudinary
       const result = await cloudinary.uploader.upload(tempFilePath, {
         resource_type: "auto",
       });
-
-      // Clean up local temp file after upload
-      //   fs.unlinkSync(tempFilePath);
-
-      // Save metadata in MongoDB
-      const newPhoto = new Photo({
+      // console.log(result);
+      fs.unlinkSync(tempFilePath);
+      const newFile = new Photo({
         photoName: req.file.originalname,
         url: result.secure_url,
       });
-      await newPhoto.save();
-
+      await newFile.save();
       return res.status(201).json({
         message: "File uploaded successfully",
         url: result.secure_url,
       });
     } catch (error) {
-      console.error(error);
       return res
         .status(500)
-        .json({ message: "File upload failed", error: error.message });
+        .json({ message: "File saving failed", error: error.message });
     }
   });
 };
