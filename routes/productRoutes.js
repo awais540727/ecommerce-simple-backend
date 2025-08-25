@@ -16,6 +16,7 @@ import { multipleFilesUpload } from "../utlis/photos/multipleFilesUploader1.js";
 import { singlePhotoUpload } from "../utlis/photos/singleFileUpload.js";
 import { singlePhotoUpload1 } from "../utlis/photos/singlePhotoUpload1.js";
 import { singlePhotoUpload2 } from "../utlis/photos/singlePhotoUpload2.js";
+import { jwtAuth } from "../controllers/middlewares/jwtVerification.js";
 // import { photoRoute } from "../utlis/photoUpload.js";
 const router = express.Router();
 // photoRoute();
@@ -29,7 +30,6 @@ router.post("/photo2", photoUploading2);
 router.post("/photo3", singlePhotoUpload);
 router.post("/photos", multiplePhotoUploading);
 router.post("/photos4", multipleFilesUpload);
-router.get("/products", getProductControllers);
 
 // emails routes for practice
 router.get("/send-email", sendEmail);
@@ -37,8 +37,9 @@ router.get("/send-email1", sendMail1);
 router.get("/send-email2", sendEmail2);
 
 // Product
+router.get("/products", getProductControllers);
 router.get("/product/:id", getSingleProduct);
-router.delete("/delete/:id", deleteSingleProduct);
+router.delete("/delete/:id", jwtAuth, deleteSingleProduct);
 router.post("/post", singlePhotoUpload1, postSingleProduct);
 router.post("/photo", photoUploading);
 router.patch("/update/:id", updateProduct);
